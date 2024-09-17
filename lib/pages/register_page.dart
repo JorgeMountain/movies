@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../models/user.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -59,7 +61,28 @@ class _RegisterPageState extends State<RegisterPage> {
     final String dateFormatted = formatter.format(newDate);
     return dateFormatted;
   }
-  void _onRegisterButtonClicked(){}
+
+  void _onRegisterButtonClicked(){
+    String genere = _genre == Genre.male ? 'Masculino' : 'Femenino';
+    var user = User(
+       _name.text,
+      _email.text,
+      _password.text,
+      genere,
+      _isActionFavorite,
+      _isAdventureFavorite,
+      _isComicFavorite,
+      _isTerrorFavorite,
+      _isRomanceFavorite,
+      _isFantacyFavorite,
+      _data,
+      _city.text
+    );
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
