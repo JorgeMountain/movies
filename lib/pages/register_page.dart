@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _registerUser(User user) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("user", jsonEncode(user));
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+    Navigator.pop(context);
   }
   void _onRegisterButtonClicked(){
     String genere = _genre == Genre.male ? 'Masculino' : 'Femenino';
@@ -83,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
       _isTerrorFavorite,
       _isRomanceFavorite,
       _isFantacyFavorite,
-      _data,
+      _data.toString(),
       _city.text
     );
     _registerUser(user);

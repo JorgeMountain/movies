@@ -12,6 +12,8 @@ class User{
   var _bornDate;
   var _city;
 
+  User.Empty();
+
   Map<String, dynamic> toJson() =>{
     "name": _name,
     "email": _email,
