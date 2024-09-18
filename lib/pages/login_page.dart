@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:movies/pages/home_page.dart';
+import 'package:movies/pages/navigation_bar_page.dart';
 import 'package:movies/pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
@@ -29,10 +29,16 @@ class _LoginPageState extends State<LoginPage> {
     print(user.password);
   }
 
+  _saveSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isUserLogged", true);
+  }
   void _onLoginButtonClicked() {
+
     if (_email.text == user.email && _password.text == user.password) {
+      _saveSession();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+          context, MaterialPageRoute(builder: (context) => const NavigationBarPage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Usuario o contraseña incorrectos"),
@@ -125,18 +131,17 @@ class _LoginPageState extends State<LoginPage> {
                       _onLoginButtonClicked();
                     },
                     child: const Text("Iniciar Sesion")),
-                TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(
-                          fontSize: 14, fontStyle: FontStyle.italic),
-                    ),
+                ElevatedButton(
+
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const RegisterPage()));
+
                     },
                     child: Text("Registarse")),
+
               ],
             ),
           ),

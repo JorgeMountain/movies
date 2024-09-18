@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:movies/pages/drawer_page.dart';
+import 'package:movies/pages/home_page.dart';
 import 'package:movies/pages/login_page.dart';
+import 'package:movies/pages/navigation_bar_page.dart';
 import 'package:movies/pages/register_page.dart';
+import 'package:movies/pages/tabs_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -13,10 +18,20 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _closeSplash() async{
     Future.delayed(const Duration(seconds: 2), () async{
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context)=> const LoginPage())
-      );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var isUserLogged = prefs.getBool("isUserLogged") ;
+
+      if (isUserLogged??false) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const NavigationBarPage())
+        ) ;
+      } else {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage())
+        ) ;
+      }
     });
   }
   @override
