@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
+import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -62,6 +65,11 @@ class _RegisterPageState extends State<RegisterPage> {
     return dateFormatted;
   }
 
+  void _registerUser(User user) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("user", jsonEncode(user));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+  }
   void _onRegisterButtonClicked(){
     String genere = _genre == Genre.male ? 'Masculino' : 'Femenino';
     var user = User(
@@ -78,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
       _data,
       _city.text
     );
-
+    _registerUser(user);
   }
 
 

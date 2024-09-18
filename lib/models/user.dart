@@ -12,6 +12,35 @@ class User{
   var _bornDate;
   var _city;
 
+  Map<String, dynamic> toJson() =>{
+    "name": _name,
+    "email": _email,
+    "password": _password,
+    "genre": _genre,
+    "isActionFavorite": _isActionFavorite,
+    "isAdventureFavorite": _isAdventureFavorite,
+    "isComicFavorite": _isComicFavorite,
+    "isTerrorFavorite": _isTerrorFavorite,
+    "isRomanceFavorite": _isRomanceFavorite,
+    "isFantacyFavorite": _isFantacyFavorite,
+    "bornDate": _bornDate,
+    "city": _city
+  };
+  User.fromJson( Map<String, dynamic> json){
+    _name = json["name"];
+    _email = json["email"];
+    _password = json["password"];
+    _genre = json["genre"];
+    _isActionFavorite = json["isActionFavorite"];
+    _isAdventureFavorite = json["isAdventureFavorite"];
+    _isComicFavorite = json["isComicFavorite"];
+    _isTerrorFavorite = json["isTerrorFavorite"];
+    _isRomanceFavorite = json["isRomanceFavorite"];
+    _isFantacyFavorite = json["isFantacyFavorite"];
+    _bornDate = json["bornDate"];
+    _city = json["city"];
+
+  }
   get name => _name;
 
   set name(value) {
