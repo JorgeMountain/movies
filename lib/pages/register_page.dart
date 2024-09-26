@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:movies/repository/firebase_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
@@ -16,6 +17,9 @@ class RegisterPage extends StatefulWidget {
 enum Genre { male, female }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
+
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -65,10 +69,23 @@ class _RegisterPageState extends State<RegisterPage> {
     return dateFormatted;
   }
 
-  void _registerUser(User user) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("user", jsonEncode(user));
-    Navigator.pop(context);
+  void _createUser(User user) async{
+   /* SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("user", jsonEncode(user));*/
+    String msg = "";
+    var result = await _firebaseApi.createUser(user.email, user.password);
+    if(result == 'invalid-email'){
+      msg = "El correo no es válido";
+    }else if(result == 'email-already-in-use'){
+      msg = "El correo ya se encuentra registrado";
+    }else if(result == 'weak-password') {
+      msg = "La contraseña debe tener al menos 6 caracteres";
+    }else{
+      msg = "Usuario registrado correctamente";
+      Navigator.pop(context);
+    }
+
+
   }
   void _onRegisterButtonClicked(){
     String genere = _genre == Genre.male ? 'Masculino' : 'Femenino';
@@ -86,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
       _data.toString(),
       _city.text
     );
-    _registerUser(user);
+    _createUser(user);
   }
 
 

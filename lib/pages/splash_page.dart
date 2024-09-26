@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/pages/drawer_page.dart';
 import 'package:movies/pages/home_page.dart';
@@ -21,9 +22,8 @@ class _SplashPageState extends State<SplashPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var isUserLogged = prefs.getBool("isUserLogged") ;
 
-      if (isUserLogged??false) {
-        Navigator.pushReplacement(
-            context,
+     /* if (isUserLogged??false) {
+        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const NavigationBarPage())
         ) ;
       } else {
@@ -31,7 +31,21 @@ class _SplashPageState extends State<SplashPage> {
             context,
             MaterialPageRoute(builder: (context) => const LoginPage())
         ) ;
-      }
+      }*/
+      FirebaseAuth.instance
+          .authStateChanges()
+          .listen((User? user) {
+        if (user == null) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LoginPage()));
+
+        } else {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const NavigationBarPage())) ;
+        }
+      });
+
+
     });
   }
   @override
